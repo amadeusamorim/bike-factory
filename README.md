@@ -33,11 +33,19 @@ Com base na solução implantada responda aos seguintes questionamentos:
 ### 🔶 ELABORAÇÃO DO MODELO CONCEITUAL
 Foi levado em consideração os dados que tinham correlacionamento/correspondência de uma tabela para outra. Um importante fator na modelagem dos dados em questão é de que mesmo que não haja uma oferta especial, a tabela *SpecialOfferProduct* se fará relevante para conectar-se com a tabela *Product* dentro da regra de negócio apresentada.
 
-Abaixo o demonstrativo da **modelagem realizada**:
+Abaixo o demonstrativo da **modelagem realizada** (clicar na imagem para maior detalhamento):
 
 [![QrA8nn.md.png](https://iili.io/QrA8nn.md.png)](https://freeimage.host/i/QrA8nn)
 
+### ☁️ NUVEM E ARQUITETURA
+Foi escolhido a nuvem da Azure com a ferramenta Databricks. A justificativa da escolha do Databricks é a agilidade de processamento de dados, mesmo que com pouco volume, como também a economia gerada com o ambiente. 
 
+Foi gerado um cluster single node, sem workers, devido aos poucos dados que serão processados.
+[![Q4OKR2.png](https://iili.io/Q4OKR2.png)](https://freeimage.host/br)
+
+O Databricks também permite a visualização dos dados através do Databricks SQL.
+
+Fiz a interligação do meu notebook com o meu repositório dentro do GitHub, configuração esta realizada por meio de um token gerado dentro do próprio Github e inserido no Databricks.
 
 
 ### 📁 PASTAS E ARQUIVOS
@@ -46,6 +54,7 @@ Dentro do respectivo repositório, temos algumas pastas e arquivos e abaixo info
 
 * **raw-folder**: Pasta que constará os **arquivos brutos do projeto**, ou seja, os arquivos em formato .csv que serão levados ao Databricks por meio de uma ingestão via DBFS, formatados em dataframes e preparados para suas respectivas análises. 
 * **modelagem-conceitual**: Pasta que constará o arquivo editável e a imagem da modelagem conceitual da fábrica de bicicletas, mostrando as ligações entre as tabelas apresentadas.
+* **notebooks**: Pasta que constará o notebook do Databricks com as devidas transformações dos dados.
 
 ### 📊 Visualizações
 
