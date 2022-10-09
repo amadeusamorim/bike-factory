@@ -84,13 +84,20 @@ df_salesorderdetail.createOrReplaceTempView("SalesOrderDetail")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT 
-# MAGIC   COUNT(SalesOrderID) TOTAL_PEDIDOS_MAIOR_3_LINHAS
-# MAGIC FROM 
-# MAGIC   SalesOrderDetail
-# MAGIC WHERE
-# MAGIC   LineTotal > 3;
+# Salvando a query numa variável
+df_1 = spark.sql("""SELECT 
+                      COUNT(SalesOrderID) TOTAL_PEDIDOS_MAIOR_3_LINHAS
+                    FROM 
+                      SalesOrderDetail
+                    WHERE
+                      LineTotal > 3""")
+
+display(df_1)
+
+# COMMAND ----------
+
+# Salvando como tabela para importar no PBI
+df_1.write.mode("overwrite").saveAsTable("df_1")
 
 # COMMAND ----------
 
@@ -99,25 +106,31 @@ df_salesorderdetail.createOrReplaceTempView("SalesOrderDetail")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT 
-# MAGIC   P.Name AS NOME_PRODUTO, 
-# MAGIC   P.DaysToManufacture AS DIAS_MANUFATURA, 
-# MAGIC   SUM(SOD.OrderQty) AS TOTAL_VENDIDO
-# MAGIC FROM 
-# MAGIC   SalesOrderDetail SOD
-# MAGIC INNER JOIN 
-# MAGIC   SpecialOfferProduct SOP
-# MAGIC ON SOD.SpecialOfferID = SOP.SpecialOfferID
-# MAGIC INNER JOIN 
-# MAGIC   Product P
-# MAGIC ON SOP.ProductId = P.ProductID
-# MAGIC GROUP BY 
-# MAGIC   P.Name, 
-# MAGIC   P.DaysToManufacture
-# MAGIC ORDER BY
-# MAGIC   SUM(SOD.OrderQty) DESC
-# MAGIC LIMIT 3
+df_2 = spark.sql("""SELECT 
+                      P.Name AS NOME_PRODUTO, 
+                      P.DaysToManufacture AS DIAS_MANUFATURA, 
+                      SUM(SOD.OrderQty) AS TOTAL_VENDIDO
+                    FROM 
+                      SalesOrderDetail SOD
+                    INNER JOIN 
+                      SpecialOfferProduct SOP
+                    ON SOD.SpecialOfferID = SOP.SpecialOfferID
+                    INNER JOIN 
+                      Product P
+                    ON SOP.ProductId = P.ProductID
+                    GROUP BY 
+                      P.Name, 
+                      P.DaysToManufacture
+                    ORDER BY
+                      SUM(SOD.OrderQty) DESC
+                    LIMIT 3""")
+
+display(df_2)
+
+# COMMAND ----------
+
+# Salvando como tabela para importar no PBI
+df_2.write.mode("overwrite").saveAsTable("df_2")
 
 # COMMAND ----------
 
@@ -126,22 +139,28 @@ df_salesorderdetail.createOrReplaceTempView("SalesOrderDetail")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT 
-# MAGIC   CONCAT(P.FirstName, ' ', P.LastName) AS NOME,
-# MAGIC   COUNT(SOH.CustomerID) AS PEDIDOS_REALIZADOS
-# MAGIC FROM 
-# MAGIC   Person P
-# MAGIC INNER JOIN 
-# MAGIC   Customer C
-# MAGIC ON P.BusinessEntityID = C.CustomerID
-# MAGIC INNER JOIN 
-# MAGIC   SalesOrderHeader SOH
-# MAGIC ON SOH.CustomerID = C.CustomerID
-# MAGIC GROUP BY 
-# MAGIC   CONCAT(P.FirstName, ' ', P.LastName)
-# MAGIC ORDER BY 
-# MAGIC   COUNT(SOH.CustomerID) DESC
+df_3 = spark.sql("""SELECT 
+                      CONCAT(P.FirstName, ' ', P.LastName) AS NOME,
+                      COUNT(SOH.CustomerID) AS PEDIDOS_REALIZADOS
+                    FROM 
+                      Person P
+                    INNER JOIN 
+                      Customer C
+                    ON P.BusinessEntityID = C.CustomerID
+                    INNER JOIN 
+                      SalesOrderHeader SOH
+                    ON SOH.CustomerID = C.CustomerID
+                    GROUP BY 
+                      CONCAT(P.FirstName, ' ', P.LastName)
+                    ORDER BY 
+                      COUNT(SOH.CustomerID) DESC""")
+
+display(df_3)
+
+# COMMAND ----------
+
+# Salvando como tabela para importar no PBI
+df_3.write.mode("overwrite").saveAsTable("df_3")
 
 # COMMAND ----------
 
@@ -150,24 +169,30 @@ df_salesorderdetail.createOrReplaceTempView("SalesOrderDetail")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT 
-# MAGIC   P.ProductID AS ID_PRODUTO,
-# MAGIC   CAST(SOH.OrderDate AS DATE) AS DIA_PEDIDO,
-# MAGIC   SUM(SOD.OrderQty) AS TOTAL_PEDIDOS
-# MAGIC FROM 
-# MAGIC   SalesOrderHeader SOH
-# MAGIC INNER JOIN
-# MAGIC   SalesOrderDetail SOD
-# MAGIC ON SOH.SalesOrderID = SOD.SalesOrderID
-# MAGIC INNER JOIN
-# MAGIC   Product P
-# MAGIC ON P.ProductID = SOD.ProductID
-# MAGIC GROUP BY 
-# MAGIC   P.ProductID, 
-# MAGIC   SOH.OrderDate
-# MAGIC ORDER BY
-# MAGIC   SUM(SOD.OrderQty) DESC
+df_4 = spark.sql("""SELECT 
+                      P.ProductID AS ID_PRODUTO,
+                      CAST(SOH.OrderDate AS DATE) AS DIA_PEDIDO,
+                      SUM(SOD.OrderQty) AS TOTAL_PEDIDOS
+                    FROM 
+                      SalesOrderHeader SOH
+                    INNER JOIN
+                      SalesOrderDetail SOD
+                    ON SOH.SalesOrderID = SOD.SalesOrderID
+                    INNER JOIN
+                      Product P
+                    ON P.ProductID = SOD.ProductID
+                    GROUP BY 
+                      P.ProductID, 
+                      SOH.OrderDate
+                    ORDER BY
+                      SUM(SOD.OrderQty) DESC""")
+
+display(df_4)
+
+# COMMAND ----------
+
+# Salvando como tabela para importar no PBI
+df_4.write.mode("overwrite").saveAsTable("df_4")
 
 # COMMAND ----------
 
@@ -176,14 +201,21 @@ df_salesorderdetail.createOrReplaceTempView("SalesOrderDetail")
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT
-# MAGIC   SalesOrderID AS ORDEM_COMPRA,
-# MAGIC   CAST(OrderDate AS DATE) AS DATA_PEDIDO, -- Timestamp para data
-# MAGIC   CAST(REPLACE(TotalDue, ',' , '.') AS DECIMAL(12,2)) AS TOTAL_DEVIDO -- Formatei a String, mudando vírgula por ponto e convertendo em Decimal para aplicar o WHERE
-# MAGIC FROM SalesOrderHeader
-# MAGIC WHERE 
-# MAGIC   YEAR(OrderDate) = 2011
-# MAGIC   AND
-# MAGIC   CAST(REPLACE(TotalDue, ',' , '.') AS DECIMAL(12,2)) > 1000
-# MAGIC ORDER BY TOTAL_DEVIDO DESC;
+df_5 = spark.sql("""SELECT
+                      SalesOrderID AS ORDEM_COMPRA,
+                      CAST(OrderDate AS DATE) AS DATA_PEDIDO, -- Timestamp para data
+                      CAST(REPLACE(TotalDue, ',' , '.') AS DECIMAL(12,2)) AS TOTAL_DEVIDO -- Formatei a String, mudando vírgula por ponto e convertendo em Decimal para aplicar o WHERE
+                    FROM 
+                      SalesOrderHeader
+                    WHERE 
+                      YEAR(OrderDate) = 2011
+                      AND
+                      CAST(REPLACE(TotalDue, ',' , '.') AS DECIMAL(12,2)) > 1000
+                    ORDER BY TOTAL_DEVIDO DESC""")
+
+display(df_5)
+
+# COMMAND ----------
+
+# Salvando como tabela para importar no PBI
+df_5.write.mode("overwrite").saveAsTable("df_5")
