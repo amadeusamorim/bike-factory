@@ -30,9 +30,12 @@ Com base na solução implantada responda aos seguintes questionamentos:
 
 ## ✔️ RESOLUÇÃO
 
-### ELABORAÇÃO DO MODELO CONCEITUAL
-Foi levado em consideração os dados que tinham correlacionamento/correspondência de uma tabela para outra. Um importante fator na modelagem dos dados em questão é de que 
+### 🔶 ELABORAÇÃO DO MODELO CONCEITUAL
+Foi levado em consideração os dados que tinham correlacionamento/correspondência de uma tabela para outra. Um importante fator na modelagem dos dados em questão é de que mesmo que não haja uma oferta especial, a tabela *SpecialOfferProduct* se fará relevante para conectar-se com a tabela *Product* dentro da regra de negócio apresentada.
 
+Abaixo o demonstrativo da **modelagem realizada**:
+
+[![QrA8nn.md.png](https://iili.io/QrA8nn.md.png)](https://freeimage.host/i/QrA8nn)
 
 
 
@@ -42,7 +45,7 @@ Foi levado em consideração os dados que tinham correlacionamento/correspondên
 Dentro do respectivo repositório, temos algumas pastas e arquivos e abaixo informo com mais detalhes suas funções dentro do projeto.
 
 * **raw-folder**: Pasta que constará os **arquivos brutos do projeto**, ou seja, os arquivos em formato .csv que serão levados ao Databricks por meio de uma ingestão via DBFS, formatados em dataframes e preparados para suas respectivas análises. 
-
+* **modelagem-conceitual**: Pasta que constará o arquivo editável e a imagem da modelagem conceitual da fábrica de bicicletas, mostrando as ligações entre as tabelas apresentadas.
 
 ### 📊 Visualizações
 
