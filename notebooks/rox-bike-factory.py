@@ -210,6 +210,8 @@ df_5 = spark.sql("""SELECT
                     WHERE 
                       YEAR(OrderDate) = 2011
                       AND
+                      MONTH(OrderDate) = 09
+                      AND
                       CAST(REPLACE(TotalDue, ',' , '.') AS DECIMAL(12,2)) > 1000
                     ORDER BY TOTAL_DEVIDO DESC""")
 
