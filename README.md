@@ -17,7 +17,7 @@ Os seguintes arquivos devem ser importados (ETL) para o banco de dados de sua es
 *	Person.Person.csv
 *	Sales.SalesOrderDetail.csv
 
-### 📈 DADOS PARA ANÁLISE
+### 📈 Dados para análise
 
 Com base na solução implantada responda aos seguintes questionamentos:
 *	Escreva uma query que retorna a quantidade de linhas na tabela Sales.SalesOrderDetail pelo campo SalesOrderID, desde que tenham pelo menos três linhas de detalhes.
@@ -30,37 +30,45 @@ Com base na solução implantada responda aos seguintes questionamentos:
 
 ## ✔️ RESOLUÇÃO
 
-### 🔶 ELABORAÇÃO DO MODELO CONCEITUAL
+### 🔶 Elaboração do Modelo Conceitual
 Foi levado em consideração os dados que tinham correlacionamento/correspondência de uma tabela para outra. Um importante fator na modelagem dos dados em questão é de que mesmo que não haja uma oferta especial, a tabela *SpecialOfferProduct* se fará relevante para conectar-se com a tabela *Product* dentro da regra de negócio apresentada.
 
 Abaixo o demonstrativo da **modelagem realizada** (clicar na imagem para maior detalhamento):
 
 [![QrA8nn.md.png](https://iili.io/QrA8nn.md.png)](https://freeimage.host/i/QrA8nn)
 
-### ☁️ NUVEM E ARQUITETURA
-Foi escolhido a nuvem da Azure com a ferramenta Databricks. A justificativa da escolha do Databricks é a agilidade de processamento de dados, mesmo que com pouco volume, como também a economia gerada com o ambiente. 
+### ☁️ Nuvem e Arquitetura
+Foi escolhido a nuvem da Azure com a ferramenta Databricks. A justificativa da escolha do Databricks é a agilidade de processamento de dados, como também a economia gerada com o ambiente. A possibilidade de gerar relatórios pelo Databricks SQL e também a integração com Power BI.
+
+O Databricks também possui o seu próprio Banco de Dados (Databricks File System - DBFS), que é um sistema de arquivo distribuído dentro da ferramenta. Auxilia bastante na configuração da ferramenta, pois elimina a necessidade de API para linkar com outro Database.
+
+**Na Azure...**
+
+Em primeira instância, foi necessário a criação de um Resourge Group, de modo que pudesse efetuar o provisionamento do Azure Databricks.
 
 Foi gerado um cluster single node, sem workers, devido aos poucos dados que serão processados.
-[![Q4OKR2.png](https://iili.io/Q4OKR2.png)](https://freeimage.host/br)
+[![Q4OKR2.png](https://iili.io/Q4OKR2.png)](https://freeimage.host/i/Q4OKR2)
 
-O Databricks também permite a visualização dos dados através do Databricks SQL.
+Fiz a interligação do notebook com o meu repositório dentro do GitHub, configuração esta realizada por meio de um token gerado dentro do próprio Github e inserido no Databricks.
 
-Fiz a interligação do meu notebook com o meu repositório dentro do GitHub, configuração esta realizada por meio de um token gerado dentro do próprio Github e inserido no Databricks.
+Após a ingestão, tratamento (dentro das queries) e análise dos dados, foram criados dataframes que depois foram levados ao Power BI por meio de um conector dentro do próprio PBI.
 
-
-### 📁 PASTAS E ARQUIVOS
+### 📁 Pastas e Arquivos
 
 Dentro do respectivo repositório, temos algumas pastas e arquivos e abaixo informo com mais detalhes suas funções dentro do projeto.
 
 * **raw-folder**: Pasta que constará os **arquivos brutos do projeto**, ou seja, os arquivos em formato .csv que serão levados ao Databricks por meio de uma ingestão via DBFS, formatados em dataframes e preparados para suas respectivas análises. 
 * **modelagem-conceitual**: Pasta que constará o arquivo editável e a imagem da modelagem conceitual da fábrica de bicicletas, mostrando as ligações entre as tabelas apresentadas.
 * **notebooks**: Pasta que constará o notebook do Databricks com as devidas transformações dos dados.
+* **view-pbi**: Pasta que constará o arquivo e view do Power BI, com os dados extraídos diretamente das queries realizadas dentro do notebook da Azure Databricks.
 
-### 📊 Visualizações
+### 📊 View das Queries
+[![Q6CUVj.png](https://iili.io/Q6CUVj.png)](https://freeimage.host/i/Q6CUVj)
 
 
 ### 🔧 Ferramentas utilizadas
 - ``BR Modelo``
 - ``Azure Databricks``
+- ``Power BI``
 - ``Spark``
 
